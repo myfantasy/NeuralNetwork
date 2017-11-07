@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>MyFantasy.NeuralNetwork</AssemblyName>
+    <RootNamespace>nnet</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MyFantasy.SystemClasses" Version="1.0.5" />
+  </ItemGroup>
+
+</Project>
