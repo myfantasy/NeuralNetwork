@@ -38,6 +38,12 @@ namespace test_app
                 }
                 );
 
+
+            NeuralnetField nf = new NeuralnetField();
+            nf.step_count = new List<int>() { 2, 3, 4 };
+
+            var v = nf.Calc(null);
+
             Console.WriteLine("0, 0, " + n3.Calc(new Dictionary<long, double>() { { 0, -0.8 }, { 1, -0.8 } })[0]);
             Console.WriteLine("0, 1, " + n3.Calc(new Dictionary<long, double>() { { 0, -0.8 }, { 1, 0.8 } })[0]);
             Console.WriteLine("1, 0, " + n3.Calc(new Dictionary<long, double>() { { 0, 0.8 }, { 1, -0.8 } })[0]);
