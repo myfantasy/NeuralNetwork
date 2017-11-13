@@ -10,7 +10,7 @@ namespace test_app
     {
         static void Main(string[] args)
         {
-            var net = Neuralnet.CreateSimple(new System.Collections.Generic.List<int>() { 2,5,10, 5,2 });
+            var net = Neuralnet.CreateSimple(new System.Collections.Generic.List<int>() { 2,5,2 });
 
             var d = net.ToDSO().TryGetJson();
 
@@ -39,10 +39,53 @@ namespace test_app
                 );
 
 
-            NeuralnetField nf = new NeuralnetField();
-            nf.step_count = new List<int>() { 2, 3, 4 };
+            Field input_filed = new Field(4, 2)
+                .AddOrUpdate(-1, 0, 0)
+                .AddOrUpdate(-1, 0, 1)
 
-            var v = nf.Calc(null);
+                .AddOrUpdate(1, 1, 0)
+                .AddOrUpdate(-1, 1, 1)
+
+                .AddOrUpdate(-1, 2, 0)
+                .AddOrUpdate(1, 2, 1)
+
+                .AddOrUpdate(1, 3, 0)
+                .AddOrUpdate(1, 3, 1);
+
+            Field output_filed = new Field(4)
+                .AddOrUpdate(0.8, 0)
+                .AddOrUpdate(-0.8, 1)
+                .AddOrUpdate(-0.8, 2)
+                .AddOrUpdate(0.8, 3);
+
+            NeuralnetField nf = new NeuralnetField();
+            nf.net = n4;
+            nf.GetPointFromField = NeuralnetField.GetPointFromField_2Point;
+            nf.GetPointFromField_name = "GetPointFromField_2Point";
+            nf.out_field_size = new int[1] { 4 };
+            nf.step_count.Add(4);
+            nf.step_count.Add(1);
+
+            var nf2 = nf.Copy();
+
+            var f = nf2.Calc(input_filed);
+
+
+            ConvNeuralnet cn = ConvNeuralnet.CreateSimple(NeuralnetField.CreateSimple(
+                new List<int>() { 2, 5, 2 },
+                new List<int>() { 4 },
+                new List<int>() { 4, 1 },
+                "GetPointFromField_2Point",
+                "SetResultToField_Point"));
+
+            cn = Learning.RandomLearn(cn, 1000, 0.5, 0.3, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(input_filed, output_filed) });
+
+            var f2 = cn.Calc(input_filed);
+
+            //NeuralnetField nf = new NeuralnetField();
+            //nf.step_count = new List<int>() { 2, 3, 4 };
+
+            //var v = nf.Calc(null);
 
             Console.WriteLine("0, 0, " + n3.Calc(new Dictionary<long, double>() { { 0, -0.8 }, { 1, -0.8 } })[0]);
             Console.WriteLine("0, 1, " + n3.Calc(new Dictionary<long, double>() { { 0, -0.8 }, { 1, 0.8 } })[0]);
@@ -55,7 +98,16 @@ namespace test_app
             Console.WriteLine("0, 1, " + DictDisplay(n4.Calc(new Dictionary<long, double>() { { 0, -1 }, { 1, 1 } })));
             Console.WriteLine("1, 0, " + DictDisplay(n4.Calc(new Dictionary<long, double>() { { 0, 1 }, { 1, -1 } })));
             Console.WriteLine("1, 1, " + DictDisplay(n4.Calc(new Dictionary<long, double>() { { 0, 1 }, { 1, 1 } })));
-            
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine(FieldDisplay(input_filed));
+
+            Console.WriteLine();
+
+            Console.WriteLine(FieldDisplay(f2));
+
             Console.ReadKey();
         }
 
@@ -74,6 +126,44 @@ namespace test_app
                 sb.Append(v.Value.ToString("0.000"));
                 b = true;
             }
+            return sb.ToString();
+        }
+
+
+        public static string FieldDisplay(Field f)
+        {
+            StringBuilder sb = new StringBuilder("");
+
+            int max = f.size.Aggregate((acc, next) => acc.IfDefault(1).Value * next);
+            int c = f.size.Count;
+            bool b = false;
+
+            foreach (var point in f.values.OrderBy(g=>g.Key))
+            {
+                if (b)
+                {
+                    sb.AppendLine();
+                }
+                int[] p = new int[c];
+                int mult = max;
+                int z = (int)point.Key;
+                for (int k = c - 1; k >= 0; k--)
+                {
+                    mult = mult / f.size[k];
+                    p[k] = z / mult;
+                    z = z % mult;
+                }
+
+                for (int i = 0; i < p.Length; i++)
+                {
+                    sb.Append(p[i]);
+                    sb.Append("\t");
+                }
+                sb.Append(point.Value.ToString("0.000"));
+
+                b = true;
+            }
+
             return sb.ToString();
         }
     }

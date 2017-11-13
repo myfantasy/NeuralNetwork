@@ -7,6 +7,7 @@ namespace nnet.common
 {
     public class Field
     {
+        #region Common
         public Field()
         { }
 
@@ -27,9 +28,9 @@ namespace nnet.common
             }
         }
 
-        List<int> size = new List<int>();
+        public List<int> size = new List<int>();
 
-        Dictionary<long, double> values = new Dictionary<long, double>();
+        public Dictionary<long, double> values = new Dictionary<long, double>();
 
         public long GetIndex(params int[] pos)
         {
@@ -37,7 +38,7 @@ namespace nnet.common
 
             long mult = 1;
 
-            for (int i = 0; i < pos.Length; i++)
+            for (int i = 0; i < size.Count; i++)
             {
                 if (pos[i] >= size[i])
                 {
@@ -67,6 +68,13 @@ namespace nnet.common
             }
         }
 
+        public Field AddOrUpdate(double value, params int[] pos)
+        {
+            this[pos] = value;
 
+            return this;
+        }
+
+        #endregion        
     }
 }

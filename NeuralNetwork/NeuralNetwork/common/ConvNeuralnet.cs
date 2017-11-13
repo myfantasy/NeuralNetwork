@@ -10,23 +10,21 @@ namespace nnet.common
     public partial class ConvNeuralnet
     {
         /// <summary>
-        /// network of Neuralnet
+        /// layers NeuralnetField of ConvNeuralnet
         /// </summary>
-        public Dictionary<long, Neuralnet> net = new Dictionary<long, Neuralnet>();
-
+        public List<NeuralnetField> layers = new List<NeuralnetField>();
         
-
-        /// <summary>
-        /// layers Neuralnet of ConvNeuralnet
-        /// </summary>
-        public List<long> layers = new List<long>();
-
-
-
 
         public Field Calc(Field input)
         {
-            return null;
+            Field res = input;
+
+            for (int i = 0; i < layers.Count; i++)
+            {
+                res = layers[i].Calc(res);
+            }
+
+            return res;
         }
 
     }

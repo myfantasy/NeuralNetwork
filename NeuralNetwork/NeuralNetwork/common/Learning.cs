@@ -29,6 +29,21 @@ namespace nnet.common
             }
         }
 
+        public class IOBlockFiled
+        {
+            public Field input;
+            public Field output;
+
+            public IOBlockFiled()
+            { }
+
+            public IOBlockFiled(Field input, Field output)
+            {
+                this.input = input;
+                this.output = output;
+            }
+        }
+
         public static double d_sq(Dictionary<long, double> r1, Dictionary<long, double> r2)
         {
             double res = 0;
@@ -51,5 +66,27 @@ namespace nnet.common
 
             return Math.Pow(res / check_list.Count, 0.5);
         }
+
+
+
+
+        public static double d_sq(Field r1, Field r2)
+        {
+            return Learning.d_sq(r1.values, r2.values);
+        }
+
+
+        public static double d_sq(ConvNeuralnet net, List<IOBlockFiled> check_list)
+        {
+            double res = 0;
+
+            foreach (var v in check_list)
+            {
+                res += Math.Pow(d_sq(v.output, net.Calc(v.input)), 2);
+            }
+
+            return Math.Pow(res / check_list.Count, 0.5);
+        }
+
     }
 }

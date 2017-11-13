@@ -5,17 +5,33 @@ using System.Text;
 
 namespace nnet.common
 {
-    public class NeuralnetField
+    /// <summary>
+    /// Use the Neuralnet over Field iterative
+    /// </summary>
+    public partial class NeuralnetField
     {
-        public Neuralnet net = new Neuralnet();
 
-        public Func<Field, int[], Dictionary<long, double>> GetPointFromField = (f, p) => new Dictionary<long, double>() { { 0, f[p] } };
+        /// <summary>
+        /// Neuralnet
+        /// </summary>
+        public Neuralnet net = new Neuralnet();
         
+        public Func<Field, int[], Dictionary<long, double>> GetPointFromField = GetPointFromField_Point;
+        public string GetPointFromField_name = "GetPointFromField_Point";
+
+        /// <summary>
+        /// steps by dimentions
+        /// </summary>
         public List<int> step_count = new List<int>();
 
+        /// <summary>
+        /// Output field size
+        /// </summary>
         public int[] out_field_size = new int[0];
 
-        public Action<Field, int[], Dictionary<long, double>> SetResultToField = (f, p, d) => { f[p] = d[0]; };
+        public Action<Field, int[], Dictionary<long, double>> SetResultToField = SetResultToField_Point;
+        public string SetResultToField_name = "SetResultToField_Point";
+
 
         public Field Calc(Field input)
         {
