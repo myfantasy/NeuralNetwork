@@ -60,7 +60,7 @@ namespace nnet.common
         }
         public static double Line_func_derivative(double x)
         {
-            return 0;
+            return 1;
         }
         
         public static double Sh_func(double x)

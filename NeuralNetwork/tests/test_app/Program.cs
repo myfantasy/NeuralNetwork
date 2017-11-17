@@ -1,4 +1,5 @@
-﻿using nnet.common;
+﻿using FreeImageAPI;
+using nnet.common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,25 @@ namespace test_app
     class Program
     {
         static void Main(string[] args)
+        {
+            PictureTest();
+            return;
+            XorTest();
+        }
+
+        public static void PictureTest()
+        {
+            FreeImageBitmap fib = new FreeImageBitmap(@"C:\Users\scherbina.ilya\Pictures\Тест\skachat_foto_kotikov_4.jpg");
+
+            byte r = fib.GetPixel(30, 50).R;
+            byte g = fib.GetPixel(30, 50).G;
+            byte b = fib.GetPixel(30, 50).B;
+            byte a = fib.GetPixel(30, 50).A;
+
+
+        }
+
+        public static void XorTest()
         {
             var net = Neuralnet.CreateSimple(new System.Collections.Generic.List<int>() { 2,5,2 });
 
@@ -72,13 +92,13 @@ namespace test_app
 
 
             ConvNeuralnet cn = ConvNeuralnet.CreateSimple(NeuralnetField.CreateSimple(
-                new List<int>() { 2, 5, 2 },
+                new List<int>() { 2, 5, 1 },
                 new List<int>() { 4 },
                 new List<int>() { 4, 1 },
                 "GetPointFromField_2Point",
                 "SetResultToField_Point"));
 
-            cn = Learning.RandomLearn(cn, 1000, 0.5, 0.3, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(input_filed, output_filed) });
+            cn = Learning.RandomLearn(cn, 1000, 0.5, 0.1, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(input_filed, output_filed) });
 
             var f2 = cn.Calc(input_filed);
 
@@ -107,6 +127,9 @@ namespace test_app
             Console.WriteLine();
 
             Console.WriteLine(FieldDisplay(f2));
+
+            Console.WriteLine();
+            Console.WriteLine(cn.ToDSO().TryGetJson());
 
             Console.ReadKey();
         }

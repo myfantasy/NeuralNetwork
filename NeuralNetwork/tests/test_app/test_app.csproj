@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FreeImage-dotnet-core" Version="4.3.5" />
     <PackageReference Include="MyFantasy.SystemClasses" Version="1.0.5" />
   </ItemGroup>
 
