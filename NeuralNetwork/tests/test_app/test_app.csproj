@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\NeuralNetworkPictureTools\NeuralNetworkPictureTools.csproj" />
     <ProjectReference Include="..\..\NeuralNetwork\NeuralNetwork.csproj" />
   </ItemGroup>
 

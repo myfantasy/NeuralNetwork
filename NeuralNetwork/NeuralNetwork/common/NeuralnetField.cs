@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace nnet.common
+namespace MyFantasy.NeuralNetwork.Common
 {
     /// <summary>
     /// Use the Neuralnet over Field iterative

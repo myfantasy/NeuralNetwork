@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace nnet.common
+namespace MyFantasy.NeuralNetwork.Common
 {
     /// <summary>
     /// convolutional neural network

@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>MyFantasy.NeuralNetwork</AssemblyName>
-    <RootNamespace>nnet</RootNamespace>
+    <AssemblyName>MyFantasy.NeuralNetwork.Common</AssemblyName>
+    <RootNamespace>MyFantasy.NeuralNetwork.Common</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

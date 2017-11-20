@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>MyFantasy.NeuralNetwork.PictureTools</AssemblyName>
+    <RootNamespace>MyFantasy.NeuralNetwork.PictureTools</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FreeImage-dotnet-core" Version="4.3.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NeuralNetwork\NeuralNetwork.csproj" />
+  </ItemGroup>
+
+</Project>

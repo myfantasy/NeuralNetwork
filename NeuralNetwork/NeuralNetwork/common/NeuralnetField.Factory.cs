@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace nnet.common
+namespace MyFantasy.NeuralNetwork.Common
 {
     public partial class NeuralnetField
     {
@@ -11,11 +11,26 @@ namespace nnet.common
         {
             { "GetPointFromField_Point", GetPointFromField_Point },
             { "GetPointFromField_2Point", GetPointFromField_2Point },
+            { "GetPointFromField_Point_5x5", GetFromField_Point_x(5, 5) },
+            { "GetPointFromField_Point_8x8", GetFromField_Point_x(8, 8) },
+            { "GetPointFromField_Point_10x10", GetFromField_Point_x(10, 10) },
+            { "GetPointFromField_Point_16x16", GetFromField_Point_x(16, 16) },
+            { "GetPointFromField_Point_20x20", GetFromField_Point_x(20, 20) },
+            { "GetPointFromField_Point_half_5x5", GetFromField_Point_x_half(5, 5) },
+            { "GetPointFromField_Point_half_8x8", GetFromField_Point_x_half(8, 8) },
+            { "GetPointFromField_Point_half_10x10", GetFromField_Point_x_half(10, 10) },
+            { "GetPointFromField_Point_half_16x16", GetFromField_Point_x_half(16, 16) },
+            { "GetPointFromField_Point_half_20x20", GetFromField_Point_x_half(20, 20) },
         };
 
         public static Dictionary<string, Action<Field, int[], Dictionary<long, double>>> known_SetResultToField_funcs = new Dictionary<string, Action<Field, int[], Dictionary<long, double>>>()
         {
-            { "SetResultToField_Point", SetResultToField_Point }
+            { "SetResultToField_Point", SetResultToField_Point },
+            { "SetResultToField_Point_2x2", SetResultToField_Point_x(2, 2) },
+            { "SetResultToField_Point_3x3", SetResultToField_Point_x(3, 3) },
+            { "SetResultToField_Point_4x4", SetResultToField_Point_x(4, 4) },
+            { "SetResultToField_Point_5x5", SetResultToField_Point_x(5, 5) },
+            { "SetResultToField_Point_8x8", SetResultToField_Point_x(8, 8) },
         };
 
 
@@ -46,12 +61,96 @@ namespace nnet.common
             return new Dictionary<long, double>() { { 0, f[p] }, { 1, f[p.CloneArr().Change(1, 1)] } };
         }
 
+
+        //public static Dictionary<long, double> GetFromField_Point_16x16(Field f, int[] p)
+        //{
+        //    var res = new Dictionary<long, double>();
+        //    int k = 0;
+
+        //    for (int i = 0; i < 16; i++)
+        //    {
+        //        for (int j = 0; j < 16; j++)
+        //        {
+        //            res[k] = f[p.CloneArr().Mult(0, 16).Mult(1, 16).AddVal(0, i).AddVal(1, j)];
+
+        //            k++;
+        //        }
+        //    }
+
+        //    return res;
+        //}
+
+        public static Func<Field, int[], Dictionary<long, double>> GetFromField_Point_x(int x, int y)
+        {
+            return (f, p) =>
+            {
+                var res = new Dictionary<long, double>();
+                int k = 0;
+
+                var p0 = p.CloneArr().Mult(0, x).Mult(1, y);
+
+                for (int i = 0; i < x; i++)
+                {
+                    for (int j = 0; j < y; j++)
+                    {
+                        res[k] = f[p0.CloneArr().AddVal(0, i).AddVal(1, j)];
+
+                        k++;
+                    }
+                }
+
+                return res;
+            };
+        }
+
+        public static Func<Field, int[], Dictionary<long, double>> GetFromField_Point_x_half(int x, int y)
+        {
+            return (f, p) =>
+            {
+                var res = new Dictionary<long, double>();
+                int k = 0;
+
+                var p0 = p.CloneArr().Mult(0, x / 2).Mult(1, y / 2);
+
+                for (int i = 0; i < x; i++)
+                {
+                    for (int j = 0; j < y; j++)
+                    {
+                        res[k] = f[p0.CloneArr().AddVal(0, i).AddVal(1, j)];
+
+                        k++;
+                    }
+                }
+
+                return res;
+            };
+        }
+
+
         public static void SetResultToField_Point(Field f, int[] p, Dictionary<long, double> res)
         {
             f[p] = res[0];
         }
 
+        public static Action<Field, int[], Dictionary<long, double>> SetResultToField_Point_x(int x, int y)
+        {
+            return (f, p, res) =>
+            {
+                int k = 0;
 
+                var p0 = p.CloneArr().Mult(0, x).Mult(1, y);
+
+                for (int i = 0; i < x; i++)
+                {
+                    for (int j = 0; j < y; j++)
+                    {
+                        f[p0.CloneArr().AddVal(0, i).AddVal(1, j)] = res[k];
+
+                        k++;
+                    }
+                }
+            };
+        }
 
 
         public NeuralnetField Copy()

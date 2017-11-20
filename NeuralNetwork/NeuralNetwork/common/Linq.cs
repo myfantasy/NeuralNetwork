@@ -26,5 +26,15 @@ namespace System.Linq
             p[index] = value;
             return p;
         }
+        public static int[] AddVal(this int[] p, int index, int value)
+        {
+            p[index] = p[index] + value;
+            return p;
+        }
+        public static int[] Mult(this int[] p, int index, int value)
+        {
+            p[index] = p[index] * value;
+            return p;
+        }
     }
 }
