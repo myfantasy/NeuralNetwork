@@ -13,9 +13,100 @@ namespace test_app
     {
         static void Main(string[] args)
         {
-            PictureTest();
+            PictureTest2();
             return;
             //XorTest();
+        }
+
+        public static void PictureTest2()
+        {
+            Console.WriteLine(320 / 20 * 2 - 1);
+            Console.WriteLine(240 / 20 * 2 - 1);
+
+            MemoryBasedStream mbs = new MemoryBasedStream(File.ReadAllBytes(@"C:\Users\scherbina\Pictures\Тест\IMG_20171118_182026_1.jpg"));
+
+            FreeImageBitmap fib = new FreeImageBitmap(mbs);
+
+            mbs.Position = 0;
+
+            var f = FieldExtention.LoadPictureGray(mbs, 320, 240);
+
+            //var f_res = FieldExtention.ResultObjectTypeFiled(fib.Width, fib.Height, 320, 240, 31 * 5, 23 * 5, new List<Tuple<int, int, int, int>>() {
+            //    new Tuple<int, int, int, int>(480, 1192, 940, 1751),
+            //    new Tuple<int, int, int, int>(1050,1100, 1500, 1628),
+            //    new Tuple<int, int, int, int>(1576, 1483, 1925, 1990)
+            //});
+
+            int hx = 320 / 10;
+            int hy = 240 / 10;
+
+            int hx2 = hx * 8 / 10 * 2 - 1;
+            int hy2 = hy * 8 / 10 * 2 - 1;
+
+            var f_res = FieldExtention.ResultObjectTypeFiled(fib.Width, fib.Height, 320, 240, hx, hy, new List<Tuple<int, int, int, int>>() {
+                new Tuple<int, int, int, int>(480, 1192, 940, 1751),
+                new Tuple<int, int, int, int>(1050,1100, 1500, 1628),
+                new Tuple<int, int, int, int>(1576, 1483, 1925, 1990)
+            });
+
+
+            //ConvNeuralnet cn = ConvNeuralnet.CreateSimple(NeuralnetField.CreateSimple(
+            //    new List<int>() { 20 * 20, 5 * 5 },
+            //    new List<int>() { (320 / 20 * 2 - 1) * 5, (240 / 20 * 2 - 1) * 5 },
+            //    new List<int>() { 320 / 20 * 2 - 1, 240 / 20 * 2 - 1 },
+            //    "GetPointFromField_Point_half_20x20",
+            //    "SetResultToField_Point_5x5"));
+
+
+
+            ConvNeuralnet cn = ConvNeuralnet.CreateSimple(NeuralnetField.CreateSimple(
+                new List<int>() { 10 * 10, 10 * 10, 10 * 10, 1 * 1 },
+                new List<int>() { hx, hy },
+                new List<int>() { hx, hy },
+                "GetPointFromField_Point_10x10",
+                "SetResultToField_Point_1x1"));
+
+            Console.WriteLine(DateTime.Now);
+            cn.Calc(f);
+            Console.WriteLine(DateTime.Now);
+
+            //cn = Learning.RandomLearn(cn, 1000, 1, 0, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(f, f_res) }, is_full_random: true);
+            cn = Learning.RandomLearn(cn, 200, 1, 0.6, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(f, f_res) }
+            , is_full_random: true
+            , sig_persent_upd: 0.2
+            , do_on_learn: (cnn) => {
+
+                var f2s = cnn.Calc(f);
+                FieldDisplay_2D(f_res);
+                Console.WriteLine();
+                Console.WriteLine();
+                FieldDisplay_2D(f2s);
+                Console.WriteLine();
+            });
+
+            var f2 = cn.Calc(f);
+
+            FieldDisplay_2D(f_res);
+            Console.WriteLine();
+            Console.WriteLine();
+            FieldDisplay_2D(f2);
+
+            cn = Learning.RandomLearn(cn, 200, 0.5, 0.99, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(f, f_res) }
+                , is_full_random: false
+                , sig_persent_upd: 0.8
+                , do_on_learn: (cnn) => {
+
+                    var f2s = cnn.Calc(f);
+                    FieldDisplay_2D(f_res);
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    FieldDisplay_2D(f2s);
+                    Console.WriteLine();
+                });
+
+
+            Console.ReadKey();
+
         }
 
         public static void PictureTest()
@@ -40,13 +131,24 @@ namespace test_app
 
 
             ConvNeuralnet cn = ConvNeuralnet.CreateSimple(NeuralnetField.CreateSimple(
-                new List<int>() { 20 * 20, 20 * 20, 5 * 5 },
+                new List<int>() { 20 * 20, 5 * 5 },
                 new List<int>() { (320 / 20 * 2 - 1) * 5, (240 / 20 * 2 - 1) * 5 },
                 new List<int>() { 320 / 20 * 2 - 1, 240 / 20 * 2 - 1 },
                 "GetPointFromField_Point_half_20x20",
                 "SetResultToField_Point_5x5"));
 
-            cn = Learning.RandomLearn(cn, 10, 0.5, 0.2, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(f, f_res) });
+            Console.WriteLine(DateTime.Now);
+            cn.Calc(f);
+            Console.WriteLine(DateTime.Now);
+
+            //cn = Learning.RandomLearn(cn, 1000, 1, 0, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(f, f_res) }, is_full_random: true);
+            cn = Learning.RandomLearn(cn, 1000, 0.5, 0.995, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(f, f_res) }
+            , is_full_random: false
+            , sig_persent_upd: 0.7);
+
+            cn = Learning.RandomLearn(cn, 1000, 0.5, 0.99, new List<Learning.IOBlockFiled>() { new Learning.IOBlockFiled(f, f_res) }
+            , is_full_random: false
+            , sig_persent_upd: 0.8);
 
             var f2 = cn.Calc(f);
 

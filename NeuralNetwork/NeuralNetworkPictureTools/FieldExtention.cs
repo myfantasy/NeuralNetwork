@@ -112,7 +112,7 @@ namespace MyFantasy.NeuralNetwork.PictureTools
             {
                 for (int j = 0; j < out_height; j++)
                 {
-                    f[i, j] = -1;
+                    f[i, j] = -0.8;
                 }
             }
 
@@ -123,7 +123,7 @@ namespace MyFantasy.NeuralNetwork.PictureTools
                     {
                         for (int j = ((z.Item2 * input_height / pict_height) * out_height / input_height); j < ((z.Item4 * input_height / pict_height) * out_height / input_height); j++)
                         {
-                            f[i, j] = 1;
+                            f[i, j] = 0.8;
                         }
                     }
                 }

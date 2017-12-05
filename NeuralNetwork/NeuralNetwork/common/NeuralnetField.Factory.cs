@@ -16,16 +16,19 @@ namespace MyFantasy.NeuralNetwork.Common
             { "GetPointFromField_Point_10x10", GetFromField_Point_x(10, 10) },
             { "GetPointFromField_Point_16x16", GetFromField_Point_x(16, 16) },
             { "GetPointFromField_Point_20x20", GetFromField_Point_x(20, 20) },
+            { "GetPointFromField_Point_40x40", GetFromField_Point_x(40, 40) },
             { "GetPointFromField_Point_half_5x5", GetFromField_Point_x_half(5, 5) },
             { "GetPointFromField_Point_half_8x8", GetFromField_Point_x_half(8, 8) },
             { "GetPointFromField_Point_half_10x10", GetFromField_Point_x_half(10, 10) },
             { "GetPointFromField_Point_half_16x16", GetFromField_Point_x_half(16, 16) },
             { "GetPointFromField_Point_half_20x20", GetFromField_Point_x_half(20, 20) },
+            { "GetPointFromField_Point_half_40x40", GetFromField_Point_x_half(40, 40) },
         };
 
         public static Dictionary<string, Action<Field, int[], Dictionary<long, double>>> known_SetResultToField_funcs = new Dictionary<string, Action<Field, int[], Dictionary<long, double>>>()
         {
             { "SetResultToField_Point", SetResultToField_Point },
+            { "SetResultToField_Point_1x1", SetResultToField_Point_x(1, 1) },
             { "SetResultToField_Point_2x2", SetResultToField_Point_x(2, 2) },
             { "SetResultToField_Point_3x3", SetResultToField_Point_x(3, 3) },
             { "SetResultToField_Point_4x4", SetResultToField_Point_x(4, 4) },
