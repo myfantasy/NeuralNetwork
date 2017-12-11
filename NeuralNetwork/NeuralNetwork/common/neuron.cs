@@ -22,6 +22,11 @@ namespace MyFantasy.NeuralNetwork.Common
         public Func<double, double> da = Line_func_derivative;
 
         /// <summary>
+        /// the invert of the activation function (обратная)
+        /// </summary>
+        public Func<double, double> inva = Line_func;
+
+        /// <summary>
         /// name of the activation function
         /// </summary>
         public string a_name = "line";
