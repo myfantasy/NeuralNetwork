@@ -17,7 +17,9 @@ namespace MyFantasy.NeuralNetwork.Common
         public Neuralnet net = new Neuralnet();
         
         public Func<Field, int[], Dictionary<long, double>> GetPointFromField = GetPointFromField_Point;
+        public Action<Field, Field, int[], Dictionary<long, double>> SetPointToField = SetPointToField_Point;
         public string GetPointFromField_name = "GetPointFromField_Point";
+
 
         /// <summary>
         /// steps by dimentions
@@ -30,6 +32,7 @@ namespace MyFantasy.NeuralNetwork.Common
         public int[] out_field_size = new int[0];
 
         public Action<Field, int[], Dictionary<long, double>> SetResultToField = SetResultToField_Point;
+        public Func<Field, int[], Dictionary<long, double>> GetResultFromField = GetResultFromField_Point;
         public string SetResultToField_name = "SetResultToField_Point";
 
 

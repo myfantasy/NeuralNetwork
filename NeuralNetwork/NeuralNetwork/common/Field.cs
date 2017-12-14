@@ -68,6 +68,12 @@ namespace MyFantasy.NeuralNetwork.Common
             }
         }
 
+        public double GetValueOrDefault(int[] pos)
+        {
+            long index = GetIndex(pos);
+            return values.GetValueOrDefault(index);
+        }
+
         public Field AddOrUpdate(double value, params int[] pos)
         {
             this[pos] = value;
@@ -75,6 +81,44 @@ namespace MyFantasy.NeuralNetwork.Common
             return this;
         }
 
-        #endregion        
+        public void SetValue(double value = 0)
+        {
+            long res = 0;
+
+            long mult = 1;
+
+            for (int i = 0; i < size.Count; i++)
+            {
+                    res += (size[i] - 1) * mult;
+                mult = mult * size[i];
+            }
+
+            for (long i = 0; i < res + 1; i++)
+            {
+                values.AddOrUpdate(i, value);
+            }
+        }
+        #endregion     
+        
+        public static Field do_by_element(Field f1, Field f2, Func<double, double, double> func)
+        {
+            Field res_arr = new Field(f1.size.ToArray());
+            long res = 0;
+
+            long mult = 1;
+
+            for (int i = 0; i < f1.size.Count; i++)
+            {
+                res += (f1.size[i] - 1) * mult;
+                mult = mult * f1.size[i];
+            }
+
+            for (long i = 0; i < res + 1; i++)
+            {
+                res_arr.values.Add(i, func(f1.values.GetValueOrDefault(i), f2.values.GetValueOrDefault(i)));
+            }
+
+            return res_arr;
+        }
     }
 }
