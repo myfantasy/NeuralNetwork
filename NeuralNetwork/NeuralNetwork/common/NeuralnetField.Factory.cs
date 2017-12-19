@@ -11,6 +11,7 @@ namespace MyFantasy.NeuralNetwork.Common
         {
             { "GetPointFromField_Point", GetPointFromField_Point },
             { "GetPointFromField_2Point", GetPointFromField_2Point },
+            { "GetPointFromField_Point_2x2", GetFromField_Point_x(2, 2) },
             { "GetPointFromField_Point_5x5", GetFromField_Point_x(5, 5) },
             { "GetPointFromField_Point_8x8", GetFromField_Point_x(8, 8) },
             { "GetPointFromField_Point_10x10", GetFromField_Point_x(10, 10) },
@@ -29,6 +30,7 @@ namespace MyFantasy.NeuralNetwork.Common
         {
             { "GetPointFromField_Point", SetPointToField_Point },
             { "GetPointFromField_2Point", SetPointToField_2Point },
+            { "GetPointFromField_Point_2x2", SetToField_Point_x(2, 2) },
             { "GetPointFromField_Point_5x5", SetToField_Point_x(5, 5) },
             { "GetPointFromField_Point_8x8", SetToField_Point_x(8, 8) },
             { "GetPointFromField_Point_10x10", SetToField_Point_x(10, 10) },
@@ -98,16 +100,16 @@ namespace MyFantasy.NeuralNetwork.Common
 
         public static void SetPointToField_Point(Field f, Field m, int[] p, Dictionary<long, double> d)
         {
-            f[p] = f.GetValueOrDefault(p) + d[0];
+            f[p] = f.GetValueOrDefault(p) + d.GetValueOrDefault(0);
             m[p] = m.GetValueOrDefault(p) + 1;
         }
         public static void SetPointToField_2Point(Field f, Field m, int[] p, Dictionary<long, double> d)
         {
-            f[p] = f.GetValueOrDefault(p) + d[0];
+            f[p] = f.GetValueOrDefault(p) + d.GetValueOrDefault(0);
             m[p] = m.GetValueOrDefault(p) + 1;
 
             p = p.CloneArr().Change(1, 1);
-            f[p] = f.GetValueOrDefault(p) + d[1];
+            f[p] = f.GetValueOrDefault(p) + d.GetValueOrDefault(1);
             m[p] = m.GetValueOrDefault(p) + 1;
         }
 
@@ -164,7 +166,7 @@ namespace MyFantasy.NeuralNetwork.Common
                 {
                     for (int j = 0; j < y; j++)
                     {
-                        f[p0.CloneArr().AddVal(0, i).AddVal(1, j)] = f.GetValueOrDefault(p0.CloneArr().AddVal(0, i).AddVal(1, j)) + d[k];
+                        f[p0.CloneArr().AddVal(0, i).AddVal(1, j)] = f.GetValueOrDefault(p0.CloneArr().AddVal(0, i).AddVal(1, j)) + d.GetValueOrDefault(k);
                         m[p0.CloneArr().AddVal(0, i).AddVal(1, j)] = m.GetValueOrDefault(p0.CloneArr().AddVal(0, i).AddVal(1, j)) + 1;
 
                         k++;
@@ -208,7 +210,7 @@ namespace MyFantasy.NeuralNetwork.Common
                 {
                     for (int j = 0; j < y; j++)
                     {
-                        f[p0.CloneArr().AddVal(0, i).AddVal(1, j)] = f.GetValueOrDefault(p0.CloneArr().AddVal(0, i).AddVal(1, j)) + d[k];
+                        f[p0.CloneArr().AddVal(0, i).AddVal(1, j)] = f.GetValueOrDefault(p0.CloneArr().AddVal(0, i).AddVal(1, j)) + d.GetValueOrDefault(k);
                         m[p0.CloneArr().AddVal(0, i).AddVal(1, j)] = m.GetValueOrDefault(p0.CloneArr().AddVal(0, i).AddVal(1, j)) + 1;
 
                         k++;
@@ -298,9 +300,11 @@ namespace MyFantasy.NeuralNetwork.Common
 
             nf.GetPointFromField_name = r.GetElement<string>("gpff");
             nf.GetPointFromField = known_GetPointFromField_funcs[nf.GetPointFromField_name];
+            nf.SetPointToField = known_SetPointToField_funcs[nf.GetPointFromField_name];
 
             nf.SetResultToField_name = r.GetElement<string>("srtf");
             nf.SetResultToField = known_SetResultToField_funcs[nf.SetResultToField_name];
+            nf.GetResultFromField = known_GetResultFromField_funcs[nf.SetResultToField_name];
 
             nf.step_count = r.GetElement<List<object>>("step_count").Select(f=>(int)f).ToList();
 
